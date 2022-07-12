@@ -1,7 +1,6 @@
 
 let sectionArticle = document.getElementById('items'); 
-let item = document.querySelector("#items a");
-function recupElement(){
+
     fetch("http://localhost:3000/api/products")
       .then(function(res) {
         if (res.ok) {
@@ -15,24 +14,25 @@ function recupElement(){
             
                 
             createArticle(canape);
-            lienElement(canape);
             
         });
       })
 
-      .catch(function(err) {
-        // Une erreur est survenue
-      });
-    }
+    
 
-function createArticle(canape){      
-        let newElement = item.cloneNode(true);
-        newElement.querySelector('h3').innerText = canape.name;
-        newElement.querySelector('p').innerText = canape.description;
-        newElement.querySelector('img').setAttribute("src", canape.imageUrl);
-        newElement.querySelector('img').setAttribute("alt", canape.altTxt);
-        sectionArticle.appendChild(newElement);            
+function createArticle(canape){   
+    let html = `
+    <a href="./product.html?id=${canape._id}&name=${canape.name}&description=${canape.description}&img=${canape.imageUrl}&colors=${canape.colors}&price=${canape.price}&altTxt=${canape.altTxt}">
+        <article>
+            <img src="${canape.imageUrl}" alt="${canape.altTxt}">
+            <h3 class="productName">${canape.name}</h3>
+            <p class="productDescription">${canape.description}</p>
+        </article>
+    </a>`     
+    let a = document.createElement('a');
+    a.innerHTML = html;
+    sectionArticle.appendChild(a);
 }
-item.remove();
-recupElement();
+
+  
 
