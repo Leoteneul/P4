@@ -20,3 +20,50 @@ for (const couleur of couleurs) {
     
 }
 
+
+
+document.getElementById('addToCart')          //CREATION DE L'ELEMENT DANS LE STORAGE
+    .addEventListener('click', function(){          // PLUS TEST CHAMPS QUANTITE ET COULEUR
+
+    let article = {
+
+        name: document.getElementById('title').innerText,
+        colors: document.getElementById('colors').value,
+        quantity: document.getElementById('quantity').value,
+    };
+    
+    if (quantityIsValid(article.quantity) & colorIsValid(article.colors)){
+        let articleLinea = JSON.stringify(article);
+        localStorage.setItem(article.name + ' ' + article.colors, articleLinea);
+        console.log(article);
+    }
+    else{
+        alert('Certains champs ne respectent pas les consignes.')
+    }
+})
+
+function quantityIsValid(number){
+
+  if (/^[1-9][0-9]?$|^100$/.test(number)) {
+    console.log('nice');
+    return true;
+  } 
+  else {
+    console.log('pas nice');
+    return false;
+    }
+    
+}
+
+function colorIsValid(color){
+
+    if (couleurs.includes(color)){
+        console.log('check')
+        return true
+    }
+    else{
+        console.log('pas check')
+        return false
+    }
+}
+

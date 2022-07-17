@@ -1,5 +1,5 @@
 
-let sectionArticle = document.getElementById('items'); 
+let sectionArticle = document.getElementById('items'); // REQUETE QUETE QUI RENVOI NOTRE TABLEAU PRODUCT
 
     fetch("http://localhost:3000/api/products")
       .then(function(res) {
@@ -20,7 +20,7 @@ let sectionArticle = document.getElementById('items');
 
     
 
-function createArticle(canape){   
+function createArticle(canape){   // CREER UN ARTICLE EN FONCTION DE LA PROMISE API
     let html = `
     <a href="./product.html?id=${canape._id}&name=${canape.name}&description=${canape.description}&img=${canape.imageUrl}&colors=${canape.colors}&price=${canape.price}&altTxt=${canape.altTxt}">
         <article>
@@ -29,9 +29,8 @@ function createArticle(canape){
             <p class="productDescription">${canape.description}</p>
         </article>
     </a>`     
-    let a = document.createElement('a');
-    a.innerHTML = html;
-    sectionArticle.appendChild(a);
+
+    sectionArticle.innerHTML += html;
 }
 
   
