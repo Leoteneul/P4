@@ -1,70 +1,87 @@
-const params = new URLSearchParams(window.location.search);
 
+fetch("http://localhost:3000/api/products/" + getId())
+    .then((res) => {return res.json()})
 
-document.getElementById('title').innerText = params.get('name');  //PRODUCT NAME
-
-document.getElementById('price').innerText = params.get('price'); //PRODUCT PRICE
-
-const img = document.createElement('img'); //PRODUCT IMG
-img.src = params.get('img');
-img.alt = params.get('altTxt')
-document.querySelector('.item__img').appendChild(img);
-
-document.getElementById('description').innerText = params.get('description') //PRODUCT DESCRIPTION
-
-let couleurs = params.get('colors').split(",");     //PRODUCT COLOR
-let colorChoice = document.getElementById('colors');
-for (const couleur of couleurs) {
-    let option = `<option value=${couleur}>${couleur}</option>`;
-    colorChoice.innerHTML += option;
-    
-}
+    .then((data) => {
+        displayInfoProduct(data);
+        listenAndCreateArticle(data);
+    })
 
 
 
-document.getElementById('addToCart')          //CREATION DE L'ELEMENT DANS LE STORAGE
+
+function listenAndCreateArticle(data){
+    document.getElementById('addToCart')          //CREATION DE L'ELEMENT DANS LE STORAGE
     .addEventListener('click', function(){          // PLUS TEST CHAMPS QUANTITE ET COULEUR
+            
+        let article = {
+            id: getId(),
+            color: document.getElementById('colors').value,
+            quantity: Number(document.getElementById('quantity').value), 
+        };
 
-    let article = {
+        if (article.quantity < 1 || article.quantity > 100){
+            alert('La quantité saisie n\'est pas comprise entre 0 et 100');
+            return
+            }
 
-        name: document.getElementById('title').innerText,
-        colors: document.getElementById('colors').value,
-        quantity: document.getElementById('quantity').value,
-        
-    };
+        if(!data.colors.includes(article.color)){
+            alert('La couleur choisis ne corresponds pas');
+            return
+        }
+
+        pushArticleAndSetStorage(article);
+        alert("L'article a correctement été ajouté à votre panier! ");
+        window.history.back();
+    })
+}
+
+function displayInfoProduct(data){
+
+    document.getElementById('title').innerText = data.name;  //PRODUCT NAME
+    document.getElementById('price').innerText = data.price; //PRODUCT PRICE
+    document.getElementById('description').innerText = data.description //PRODUCT DESCRIPTION
+
+    const img = document.createElement('img'); //PRODUCT IMG
+    img.src = data.imageUrl;
+    img.alt = data.altTxt
+    document.querySelector('.item__img').appendChild(img);
+   
+    let colorChoice = document.getElementById('colors');   //PRODUCT COLOR
+    for (const color of data.colors) {
+    let option = `<option value=${color}>${color}</option>`;
+    colorChoice.innerHTML += option;
+
+    }
+}
+
+function getId(){
     
-    if (quantityIsValid(article.quantity) & colorIsValid(article.colors)){
-        let articleLinea = JSON.stringify(article);
-        localStorage.setItem(article.name + ' ' + article.colors, articleLinea);
-        console.log(article);
-    }
-    else{
-        alert('Certains champs ne respectent pas les consignes.')
-    }
-})
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
 
-function quantityIsValid(number){
+function pushArticleAndSetStorage(article){
 
-  if (/^[1-9][0-9]?$|^100$/.test(number)) {
-    console.log('nice');
-    return true;
-  } 
-  else {
-    console.log('pas nice');
-    return false;
+    let products = JSON.parse(localStorage.getItem('produits'));
+
+    if (products == null || products.length == 0) {
+        localStorage.setItem('produits', JSON.stringify([article])); 
+        return
     }
+
+    let found = products.find(product => product.id == article.id && product.color == article.color);
+    
+    if(found){
+        Number(found.quantity += article.quantity)
+        localStorage.setItem('produits', JSON.stringify(products)); 
+        return;
+    }
+    
+    products.push(article);
+    localStorage.setItem('produits', JSON.stringify(products)); 
+     
     
 }
 
-function colorIsValid(color){
-
-    if (couleurs.includes(color)){
-        console.log('check')
-        return true
-    }
-    else{
-        console.log('pas check')
-        return false
-    }
-}
 
