@@ -1,18 +1,15 @@
-
-let sectionArticle = document.getElementById('items'); // REQUETE QUETE QUI RENVOI NOTRE TABLEAU PRODUCT
-
 fetch("http://localhost:3000/api/products")
-  .then((res) => {if (res.ok) {return res.json();}})
+  .then((res) => {if (res.ok) {return res.json()}})
 
   .then(function(canapes) {
-    
     canapes.forEach(canape => {
+
       createArticle(canape);
 
     });
   })
 
-function createArticle(canape){   // CREER UN ARTICLE EN FONCTION DE LA PROMISE API
+function createArticle(canape){   // CREATION D'UN ARTICLE EN FONCTION DE L'API
     let html = `
     <a href="./product.html?id=${canape._id}">
         <article>
@@ -22,7 +19,7 @@ function createArticle(canape){   // CREER UN ARTICLE EN FONCTION DE LA PROMISE 
         </article>
     </a>`     
 
-    sectionArticle.innerHTML += html;
+    document.getElementById('items').innerHTML += html;
 }
 
   

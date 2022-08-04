@@ -8,8 +8,6 @@ fetch("http://localhost:3000/api/products/" + getId())
     })
 
 
-
-
 function listenAndCreateArticle(data){
     document.getElementById('addToCart')          //CREATION DE L'ELEMENT DANS LE STORAGE
     .addEventListener('click', function(){          // PLUS TEST CHAMPS QUANTITE ET COULEUR
@@ -55,18 +53,12 @@ function displayInfoProduct(data){
     }
 }
 
-function getId(){
-    
-    const params = new URLSearchParams(window.location.search);
-    return params.get('id');
-}
-
 function pushArticleAndSetStorage(article){
 
     let products = JSON.parse(localStorage.getItem('produits'));
 
     if (products == null || products.length == 0) {
-        localStorage.setItem('produits', JSON.stringify([article])); 
+        store([article]); 
         return
     }
 
@@ -74,12 +66,12 @@ function pushArticleAndSetStorage(article){
     
     if(found){
         Number(found.quantity += article.quantity)
-        localStorage.setItem('produits', JSON.stringify(products)); 
+        store(products);
         return;
     }
     
     products.push(article);
-    localStorage.setItem('produits', JSON.stringify(products)); 
+    store(products)
      
     
 }
