@@ -1,21 +1,20 @@
-fetch("http://localhost:3000/api/products")
+fetch("http://localhost:3000/api/products")           // RECUPERATION DES PRODUITS PRESENTS DANS L'API
   .then((res) => {if (res.ok) {return res.json()}})
 
-  .then(function(canapes) {
-    canapes.forEach(canape => {
+  .then(function(products) {
+    products.forEach(product => {
 
-      createArticle(canape);
-
+      createArticle(product);
     });
   })
 
-function createArticle(canape){   // CREATION D'UN ARTICLE EN FONCTION DE L'API
+function createArticle(product){   // CREATION D'UN ARTICLE EN FONCTION DE L'API
     let html = `
-    <a href="./product.html?id=${canape._id}">
+    <a href="./product.html?id=${product._id}">
         <article>
-            <img src="${canape.imageUrl}" alt="${canape.altTxt}">
-            <h3 class="productName">${canape.name}</h3>
-            <p class="productDescription">${canape.description}</p>
+            <img src="${product.imageUrl}" alt="${product.altTxt}">
+            <h3 class="productName">${product.name}</h3>
+            <p class="productDescription">${product.description}</p>
         </article>
     </a>`     
 

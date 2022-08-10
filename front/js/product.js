@@ -1,19 +1,23 @@
-
-fetch("http://localhost:3000/api/products/" + getId())
+// RECUPERE LES INFOS API EN FONCTION DE L'ID PRODUIT
+fetch("http://localhost:3000/api/products/" + getId('id'))
     .then((res) => {return res.json()})
 
     .then((data) => {
+
         displayInfoProduct(data);
         listenAndCreateArticle(data);
+        changePageTitle(data.name);
     })
 
+    
 
+//CREATION DE L'ELEMENT DANS LE STORAGE PLUS TEST CHAMPS QUANTITE ET COULEUR
 function listenAndCreateArticle(data){
-    document.getElementById('addToCart')          //CREATION DE L'ELEMENT DANS LE STORAGE
-    .addEventListener('click', function(){          // PLUS TEST CHAMPS QUANTITE ET COULEUR
+    document.getElementById('addToCart')          
+    .addEventListener('click', function(){      
             
         let article = {
-            id: getId(),
+            id: getId('id'),
             color: document.getElementById('colors').value,
             quantity: Number(document.getElementById('quantity').value), 
         };
@@ -21,7 +25,7 @@ function listenAndCreateArticle(data){
         if (article.quantity < 1 || article.quantity > 100){
             alert('La quantité saisie n\'est pas comprise entre 0 et 100');
             return
-            }
+        }
 
         if(!data.colors.includes(article.color)){
             alert('La couleur choisis ne corresponds pas');
@@ -34,11 +38,12 @@ function listenAndCreateArticle(data){
     })
 }
 
+// AFFICHAGE DES INFORMATIONS DU PRODUIT CHOISI
 function displayInfoProduct(data){
 
-    document.getElementById('title').innerText = data.name;  //PRODUCT NAME
-    document.getElementById('price').innerText = data.price; //PRODUCT PRICE
-    document.getElementById('description').innerText = data.description //PRODUCT DESCRIPTION
+    document.getElementById('title').textContent = data.name;  //PRODUCT NAME
+    document.getElementById('price').textContent = data.price; //PRODUCT PRICE
+    document.getElementById('description').textContent = data.description //PRODUCT DESCRIPTION
 
     const img = document.createElement('img'); //PRODUCT IMG
     img.src = data.imageUrl;
@@ -47,12 +52,12 @@ function displayInfoProduct(data){
    
     let colorChoice = document.getElementById('colors');   //PRODUCT COLOR
     for (const color of data.colors) {
-    let option = `<option value=${color}>${color}</option>`;
-    colorChoice.innerHTML += option;
-
+        let option = `<option value=${color}>${color}</option>`;
+        colorChoice.innerHTML += option;
     }
 }
 
+// COMPARE AVEC LES PRODUITS EXISTANT MODIF OU PUSH ARTICLE
 function pushArticleAndSetStorage(article){
 
     let products = JSON.parse(localStorage.getItem('produits'));
@@ -71,9 +76,13 @@ function pushArticleAndSetStorage(article){
     }
     
     products.push(article);
-    store(products)
-     
-    
+    store(products);
 }
+
+function changePageTitle(name){
+
+    document.querySelector('title').textContent = name
+ }
+ 
 
 

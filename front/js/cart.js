@@ -33,16 +33,6 @@ document.getElementById('order').addEventListener('click', function(e)
 
 
 // FUNCTIONS CART DISPLAY
-function calculTotaux(item){
-  totalArticle += parseInt(item.quantity);
-  totalPrice += item.price * item.quantity;
-  document 
-  .getElementById('totalQuantity').innerText = totalArticle;
-  
-  document
-  .getElementById('totalPrice').innerText = priceDisplay(totalPrice);
-}
-
 function createHTML(item){
   
   let html = `<article class="cart__item" data-id="${item._id}" data-color="${item.color}">
@@ -132,6 +122,15 @@ function listenQuantityChange(products){
 
 }
 
+function calculTotaux(item){
+  totalArticle += parseInt(item.quantity);
+  totalPrice += item.price * item.quantity;
+  document 
+  .getElementById('totalQuantity').innerText = totalArticle;
+  
+  document
+  .getElementById('totalPrice').innerText = priceDisplay(totalPrice);
+}
 
 // FUNCTIONS FORM AND POST REQUEST
 function createArrayId(){

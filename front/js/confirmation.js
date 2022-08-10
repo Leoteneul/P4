@@ -1,10 +1,5 @@
 
+// RECUP IDORDER ET SUPPRIME LOCALSTORAGE
+document.getElementById('orderId').textContent = getId('orderId');
+localStorage.removeItem('produits')
 
-document.getElementById('orderId').textContent = getOrderId();
-
-
-function getOrderId(){
-    
-    const params = new URLSearchParams(window.location.search);
-    return params.get('orderId');
-}

@@ -13,3 +13,9 @@ can then run the server with `node server`.
 The server should run on `localhost` with default port `3000`. If the
 server runs on another port for any reason, this is printed to the
 console when the server starts, e.g. `Listening on port 3001`.
+
+### API ###
+
+Veuillez vous référer au lien suivant pour l'explication complète du fonctionnement de L'API:
+
+https://docs.google.com/presentation/d/1f0pNr5yBMupI-R97HG01kW6aM_6QN6cNnBVYJ7q-M9M/edit?usp=sharing
